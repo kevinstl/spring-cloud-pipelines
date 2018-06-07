@@ -409,6 +409,13 @@ function deployEureka() {
 	fi
 	echo "Deploying Eureka. Options - image name [${imageName}], app name [${appName}], env [${ENVIRONMENT}]"
 	local originalDeploymentFile="${__ROOT}/k8s/eureka.yml"
+
+
+	echo "!!!!!!!!!!"
+	cat "${originalDeploymentFile}"
+	echo "!!!!!!!!!!"
+
+
 	local originalServiceFile="${__ROOT}/k8s/eureka-service.yml"
 	local outputDirectory
 	outputDirectory="$(outputFolder)/k8s"
