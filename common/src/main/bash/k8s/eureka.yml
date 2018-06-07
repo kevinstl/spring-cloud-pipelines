@@ -12,7 +12,7 @@ spec:
         containers:
           - name: {{appName}}
 #            image: {{eurekaImg}}
-            image: springcloud/eureka:latest
+            image: scpipelines/github-eureka:latest
             ports:
             - containerPort: 8761
             env:
