@@ -169,7 +169,7 @@ function deployServices() {
 	fi
 
 	while read -r serviceType serviceName serviceCoordinates; do
-		if [[ "${ENVIRONMENT}" == "TEST" ]]; then
+		if [[ "${ENVIRONMENT}" == "TEST"  && "${serviceType}" != ""]]; then
 			deleteService "${serviceType}" "${serviceName}"
 			deployService "${serviceType}" "${serviceName}" "${serviceCoordinates}"
 		else
