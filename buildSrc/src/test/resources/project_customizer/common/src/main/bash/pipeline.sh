@@ -153,6 +153,8 @@ function parsePipelineDescriptor() {
 	fi
 	export PARSED_YAML
 	PARSED_YAML=$(yaml2json "${descriptorFile}")
+
+	echo "PARSED_YAML: ${PARSED_YAML}"
 }
 
 # Deploys services assuming that pipeline descriptor exists
@@ -164,12 +166,14 @@ function deployServices() {
 	# shellcheck disable=SC2119
 	parsePipelineDescriptor
 
+
+
 	if [[ -z "${PARSED_YAML}" ]]; then
 		return
 	fi
 
 	while read -r serviceType serviceName serviceCoordinates; do
-		if [[ "${ENVIRONMENT}" == "TEST"  && "${serviceType}" != ""]]; then
+		if [[ "${ENVIRONMENT}" == "TEST" ]]; then
 			deleteService "${serviceType}" "${serviceName}"
 			deployService "${serviceType}" "${serviceName}" "${serviceCoordinates}"
 		else
@@ -181,7 +185,7 @@ function deployServices() {
 		fi
 	# retrieve the space separated type, name and coordinates
 	done <<<"$(echo "${PARSED_YAML}" | \
-				 jq -r --arg x "${LOWERCASE_ENV}" '.[$x].services[] | "\(.type) \(.name) \(.coordinates)"')"
+				 jq -r --arg x "${LOWERCASE_ENV}" '.[$x].services[]? | "\(.type) \(.name) \(.coordinates)"')"
 }
 
 # Converts YAML to JSON - uses ruby
